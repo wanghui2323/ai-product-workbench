@@ -30,7 +30,7 @@
 
 资料只引用公开 primary 来源：Google PAIR 用户需要、Microsoft Copilot 意图消歧、Anthropic Agent 评测、LangSmith 评测概念。技术产品事实以本仓库当前文件核对，外部方法作为设计参考，不称官方背书。来源检索与主张映射保存在 sources.md。
 
-计划公开仓库 https://github.com/wanghui2323/ai-product-workbench，目标发行 v0.2.0；公开与发行成功必须经本轮独立确认。测试计数不预写。当前网页仅草拟回答/方案并复制给 AI，没有内置模型服务、源文件保存服务或多人同步；AI 收到用户明确决策后回写 JSON 再重建。
+公开仓库 https://github.com/wanghui2323/ai-product-workbench，本文对应 v0.2.0；公开状态、图片和复制验证记录见 sources.md。正文不依赖测试数字宣传效果。当前网页仅草拟回答/方案并复制给 AI，没有内置模型服务、源文件保存服务或多人同步；AI 收到用户明确决策后回写 JSON 再重建。
 
 不得引用或复刻私有业务资料，不虚构用户量、成功率、测试数字，不把本地源稿、预览或复制成功写成微信公众号发布。
 

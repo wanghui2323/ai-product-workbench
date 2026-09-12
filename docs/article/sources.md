@@ -28,10 +28,10 @@
 
 后文的检索前权限过滤、分享访问时重新核查、引用与版本记录、失败测试都是此假设选择下的方案推演；不是对示例代码已经提供相应功能的声明。本文没有虚构访谈、用户量、正确率、效益或真实业务验收。
 
-## 发布前待核验项
+## 本轮交付核验
 
-- 计划仓库：[wanghui2323/ai-product-workbench](https://github.com/wanghui2323/ai-product-workbench)。公开可访问性未在本来源记录中确证，正文明确标计划。
-- 目标发行：v0.2.0。不得由仓库目录存在推断 GitHub Release 已发布。
-- 测试：正文未填写计数。只能以本轮完整验证日志填入，或者保持不写数字。
-- 三图：assets/01-workflow.png、02-decision.png、03-evidence.png。需完成包内加载、390px 和桌面检查。
-- 发布边界：本来源记录只确认正文依据与实现文件。完整预览、复制、微信保存/预览/发布需要各自的独立证据。
+- 2026-09-12，GitHub API 与源码推送结果确认 [wanghui2323/ai-product-workbench](https://github.com/wanghui2323/ai-product-workbench) 为公开仓库，默认分支 main，MIT 许可证。本文对应 v0.2.0；发行附件以 [Releases](https://github.com/wanghui2323/ai-product-workbench/releases) 页面为准。
+- 本机 macOS / Python 3.12.7：106 项回归通过，安装结果与发行 skill 一致，格式校验通过。远端 CI 独立记录在仓库 Actions；本地结果不替代远端执行。
+- 三张正文图与封面均已导出，SVG 可编辑；浏览器核对桌面与 390px，无缺图或整页横向溢出。
+- 正文富文本复制已实测：剪贴板含正文及 3 个图片标签，不含工具栏；权限拒绝时能选中正文回退。
+- 已交付本地文章与公开源码，未进行微信公众号的粘贴、保存、预览或发布。
