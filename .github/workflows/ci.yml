@@ -1,0 +1,33 @@
+name: Verify workbench and installer
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run all regression tests
+        run: python scripts/verify.py --verbose
+      - name: Build the public fictional example
+        run: >-
+          python skills/ai-dev-workbench/scripts/workbench.py build
+          --project-root examples/document-assistant
+          --data examples/document-assistant/docs/workbench/workbench.json
+      - name: Build release archive and checksum
+        run: python scripts/package.py --output-dir dist

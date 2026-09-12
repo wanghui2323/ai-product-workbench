@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1062" height="1550" viewBox="0 0 1062 1550">
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#9aafa9"/></marker></defs>
+<style>text{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#193d38}.muted{fill:#58766f}</style>
+<rect width="1062" height="1550" fill="#f3f7f4"/>
+<rect x="52" y="48" width="66" height="10" rx="5" fill="#178571"/>
+<text x="136" y="65" font-size="28" letter-spacing="3">AI 产品开发工作台 / 02</text>
+<text x="52" y="142" font-size="54" font-weight="650">一次选择，改变整条交付链</text>
+<text class="muted" x="52" y="203" font-size="34">虚构示例 · 首版选择“仅项目内分享”</text>
+<rect x="52" y="250" width="958" height="154" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="299" r="24" fill="#dcece5"/>
+<text x="102" y="309" font-size="28" text-anchor="middle">1</text>
+<text x="148" y="312" font-size="42" font-weight="600">需求边界</text>
+<text x="88" y="370" font-size="38" class="muted">仅项目内分享，成员仍受资料权限限制</text>
+<path d="M531 410 V436" stroke="#9aafa9" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="52" y="444" width="958" height="154" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="493" r="24" fill="#dcece5"/>
+<text x="102" y="503" font-size="28" text-anchor="middle">2</text>
+<text x="148" y="506" font-size="42" font-weight="600">技术方案与选型</text>
+<text x="88" y="564" font-size="38" class="muted">先核验成员与资料权限，再检索内容</text>
+<path d="M531 604 V630" stroke="#9aafa9" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="52" y="638" width="958" height="154" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="687" r="24" fill="#dcece5"/>
+<text x="102" y="697" font-size="28" text-anchor="middle">3</text>
+<text x="148" y="700" font-size="42" font-weight="600">视觉交互与 AI 规范</text>
+<text x="88" y="758" font-size="38" class="muted">标明分享范围；无权访问时说明下一步</text>
+<path d="M531 798 V824" stroke="#9aafa9" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="52" y="832" width="958" height="154" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="881" r="24" fill="#dcece5"/>
+<text x="102" y="891" font-size="28" text-anchor="middle">4</text>
+<text x="148" y="894" font-size="42" font-weight="600">开发计划及模式</text>
+<text x="88" y="952" font-size="38" class="muted">先定权限合同，再拆独立任务并行实现</text>
+<path d="M531 992 V1018" stroke="#9aafa9" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="52" y="1026" width="958" height="154" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="1075" r="24" fill="#dcece5"/>
+<text x="102" y="1085" font-size="28" text-anchor="middle">5</text>
+<text x="148" y="1088" font-size="42" font-weight="600">测试规范</text>
+<text x="88" y="1146" font-size="38" class="muted">有权成员可读；无权与退出成员被拒绝</text>
+<path d="M531 1186 V1212" stroke="#9aafa9" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="52" y="1220" width="958" height="154" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="1269" r="24" fill="#dcece5"/>
+<text x="102" y="1279" font-size="28" text-anchor="middle">6</text>
+<text x="148" y="1282" font-size="42" font-weight="600">上线版本管理</text>
+<text x="88" y="1340" font-size="38" class="muted">用同一候选产物核对目标环境和回退</text>
+<text x="52" y="1512" font-size="29" class="muted">改变分享对象时，顺着关联记录重查方案、任务、测试与版本。</text></svg>

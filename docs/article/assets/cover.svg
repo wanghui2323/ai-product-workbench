@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="383" viewBox="0 0 900 383">
+<rect width="900" height="383" fill="#143c35"/><circle cx="820" cy="25" r="260" fill="#1c5145"/>
+<g font-family="PingFang SC,Microsoft YaHei,sans-serif"><text x="50" y="62" font-size="19" letter-spacing="3" fill="#a8d6bd">OPEN SOURCE · AI PRODUCT WORKBENCH</text>
+<text x="50" y="152" font-size="48" font-weight="600" fill="#f3f6ed">AI 产品开发工作台</text><text x="50" y="211" font-size="26" fill="#c1daca">从模糊需求，到有依据的产品交付</text>
+<g font-size="19" fill="#d5eadc"><text x="50" y="306">澄清</text><text x="147" y="306">方案</text><text x="244" y="306">实现</text><text x="341" y="306">验证</text><text x="438" y="306">交付</text></g></g>
+<g stroke="#72b496" fill="none" stroke-width="2"><path d="M96 299h35m62 0h35m62 0h35m62 0h35"/><rect x="663" y="118" width="158" height="182" rx="18"/><path d="M690 157h105m-105 32h76m-76 32h94m-94 32h58"/></g></svg>

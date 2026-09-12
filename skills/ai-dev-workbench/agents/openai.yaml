@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI 产品开发工作台"
+  short_description: "从需求澄清与方案选择，贯通产品设计、AI 效果验证、开发计划与上线版本"
+  default_prompt: "使用 $ai-dev-workbench，先澄清当前产品的关键需求并提供方案选择，再建立或更新 AI 产品开发工作台。"

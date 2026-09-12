@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1062" height="1180" viewBox="0 0 1062 1180">
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#9aafa9"/></marker></defs>
+<style>text{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#193d38}.muted{fill:#58766f}</style>
+<rect width="1062" height="1180" fill="#f3f7f4"/>
+<rect x="52" y="48" width="66" height="10" rx="5" fill="#178571"/>
+<text x="136" y="65" font-size="28" letter-spacing="3">AI 产品开发工作台 / 03</text>
+<text x="52" y="142" font-size="54" font-weight="650">每种证据，只证明对应的状态</text>
+<text class="muted" x="52" y="203" font-size="34">任务与版本有不同的验收对象</text>
+<text x="52" y="283" font-size="34" font-weight="600">任务这一层</text>
+<rect x="52" y="310" width="958" height="154" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="359" r="24" fill="#dcece5"/>
+<text x="102" y="369" font-size="28" text-anchor="middle">A</text>
+<text x="148" y="372" font-size="42" font-weight="600">done · 实现完成</text>
+<text x="88" y="430" font-size="38" class="muted">已有对应产物，仍需核对退出条件</text>
+<path d="M531 470 V508" stroke="#9aafa9" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="52" y="522" width="958" height="154" rx="24" fill="#e6f2eb" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="571" r="24" fill="#dcece5"/>
+<text x="102" y="581" font-size="28" text-anchor="middle">B</text>
+<text x="148" y="584" font-size="42" font-weight="600">accepted · 任务已验收</text>
+<text x="88" y="642" font-size="38" class="muted">退出条件有对应、可核对的证据</text>
+<text x="52" y="743" font-size="34" font-weight="600">版本这一层</text>
+<rect x="52" y="770" width="958" height="146" rx="24" fill="#ffffff" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="819" r="24" fill="#dcece5"/>
+<text x="102" y="829" font-size="28" text-anchor="middle">A</text>
+<text x="148" y="832" font-size="42" font-weight="600">local_verified · 本地验证</text>
+<text x="88" y="890" font-size="38" class="muted">结果只覆盖记录中的本地条件</text>
+<path d="M531 920 V949" stroke="#9aafa9" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="52" y="960" width="958" height="146" rx="24" fill="#e6f2eb" stroke="#d3e2dc" stroke-width="2"/>
+<circle cx="102" cy="1009" r="24" fill="#dcece5"/>
+<text x="102" y="1019" font-size="28" text-anchor="middle">B</text>
+<text x="148" y="1022" font-size="42" font-weight="600">released · 目标交付已验证</text>
+<text x="88" y="1080" font-size="38" class="muted">目标产物、交付与环境回归均有依据</text>
+<text x="52" y="1142" font-size="29" class="muted">结构校验通过 ≠ 证据真实；旧结果不能自动证明新版本。</text></svg>

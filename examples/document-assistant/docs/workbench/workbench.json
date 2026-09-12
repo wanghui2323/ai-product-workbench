@@ -1,0 +1,917 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "文档助手 · 完全虚构的公开示例",
+    "purpose": "让项目成员导入资料、提问，并核对每条回答的原文依据。",
+    "updated_at": "2026-09-11T17:00:00+08:00",
+    "current_version": "V0.1",
+    "online_version": null,
+    "sources": [
+      {
+        "label": "公开虚构案例与边界说明",
+        "href": "SPEC.md"
+      }
+    ],
+    "next_action": "先完成导入对象与状态合同，再并行开发检索接口和资料列表。本页数据均为演示，不代表已有实现。"
+  },
+  "requirements": [
+    {
+      "id": "REQ-01",
+      "title": "导入后知道资料是否可用",
+      "problem": "文件上传结束后，用户无法判断是否已经解析并进入检索。",
+      "scenario": "成员上传一份 PDF，等待处理后开始提问。",
+      "priority": "P0",
+      "status": "scheduled",
+      "version_id": "V0.1",
+      "acceptance": [
+        "展示上传、解析、可检索与失败状态",
+        "刷新后状态一致，失败可重试"
+      ],
+      "source": "虚构访谈场景，仅演示需求记录方式"
+    },
+    {
+      "id": "REQ-02",
+      "title": "每条回答能定位原文",
+      "problem": "用户不能仅凭流畅回答判断结果可靠。",
+      "scenario": "成员根据项目资料提问，点击引用核对。",
+      "priority": "P0",
+      "status": "scheduled",
+      "version_id": "V0.1",
+      "acceptance": [
+        "引用可以定位文档和页码",
+        "没有充分依据时明确提示，并允许重新提问"
+      ],
+      "source": "虚构需求，仅演示验收条件"
+    },
+    {
+      "id": "REQ-03",
+      "title": "共享资料的访问范围",
+      "problem": "团队资料需要清楚的可见范围。",
+      "scenario": "负责人邀请成员使用同一资料空间。",
+      "priority": "P1",
+      "status": "idea",
+      "version_id": "V0.2",
+      "acceptance": [
+        "未授权成员无法检索共享资料"
+      ],
+      "source": "下一版本候选，权限模型尚待确认"
+    },
+    {
+      "id": "REQ-04",
+      "title": "批量导出问答记录",
+      "problem": "复盘时需要集中查看讨论结果。",
+      "scenario": "成员导出指定日期内的问答。",
+      "priority": "P2",
+      "status": "idea",
+      "version_id": null,
+      "acceptance": [],
+      "source": "需求池候选，尚未排期"
+    }
+  ],
+  "versions": [
+    {
+      "id": "V0.1",
+      "title": "可追溯的文档问答",
+      "goal": "打通导入、提问、核对引用的最小完整流程。",
+      "status": "planned",
+      "scope": [
+        "PDF 导入与持久处理状态",
+        "单人资料检索与引用定位",
+        "空结果和失败恢复"
+      ],
+      "non_goals": [
+        "多人共享与权限管理",
+        "批量导出",
+        "复杂格式 OCR"
+      ],
+      "requirements": [
+        "REQ-01",
+        "REQ-02"
+      ],
+      "product_plan": "用户导入资料后看到真实处理状态；提问得到可核查引用，缺乏依据时看到明确反馈。",
+      "technical_plan": "Document → ParseJob → Chunk → AnswerEvidence。资料状态以服务端持久记录为准；检索接口返回引用对象，前端不猜页码。",
+      "execution_plan": "先冻结导入状态与证据接口，再并行推进检索服务和资料页，最后验证刷新、重试与引用定位。",
+      "risks": [
+        "解析质量会影响引用定位",
+        "检索无结果必须有用户可见反馈"
+      ],
+      "next_action": "完成 TASK-01 的对象与状态合同。"
+    },
+    {
+      "id": "V0.2",
+      "title": "团队共享资料",
+      "goal": "让多个成员安全协作使用同一资料空间。",
+      "status": "candidate",
+      "scope": [
+        "空间成员与资料访问范围"
+      ],
+      "non_goals": [
+        "尚未冻结详细范围"
+      ],
+      "requirements": [
+        "REQ-03"
+      ],
+      "product_plan": "待明确管理员与普通成员的可见范围。",
+      "technical_plan": "候选方案：在检索前约束文档访问范围。",
+      "execution_plan": "先验证共享场景，再确定任务和验收条件。",
+      "risks": [
+        "权限过滤遗漏可能泄露资料"
+      ],
+      "next_action": "补充真实团队场景与授权边界。"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "TASK-01",
+      "title": "导入对象与状态合同",
+      "version_id": "V0.1",
+      "requirement_ids": [
+        "REQ-01"
+      ],
+      "owner": "产品 / 后端",
+      "module": "资料服务 · 对象与接口",
+      "status": "todo",
+      "depends_on": [],
+      "deliverable": "资料对象、处理状态机与接口合同",
+      "exit_criteria": [
+        "每个状态有进入条件、退出条件与失败恢复路径",
+        "刷新后能读取同一任务状态"
+      ],
+      "evidence_ids": [],
+      "blocker": "",
+      "next_action": "读取现有数据模型并整理状态合同。"
+    },
+    {
+      "id": "TASK-02",
+      "title": "检索与引用接口",
+      "version_id": "V0.1",
+      "requirement_ids": [
+        "REQ-02"
+      ],
+      "owner": "后端",
+      "module": "检索服务 · 证据对象",
+      "status": "todo",
+      "depends_on": [
+        "TASK-01"
+      ],
+      "deliverable": "带文档与页码引用的回答接口",
+      "exit_criteria": [
+        "引用绑定真实原文位置",
+        "空结果不会生成伪引用"
+      ],
+      "evidence_ids": [],
+      "blocker": "",
+      "next_action": "接口合同明确后补充有依据与无依据两类样本。"
+    },
+    {
+      "id": "TASK-03",
+      "title": "资料列表与处理反馈",
+      "version_id": "V0.1",
+      "requirement_ids": [
+        "REQ-01"
+      ],
+      "owner": "前端",
+      "module": "资料列表 / 上传入口",
+      "status": "todo",
+      "depends_on": [
+        "TASK-01"
+      ],
+      "deliverable": "上传、状态展示与失败重试界面",
+      "exit_criteria": [
+        "桌面与窄屏均可完成上传",
+        "处理期间刷新后恢复真实状态"
+      ],
+      "evidence_ids": [],
+      "blocker": "",
+      "next_action": "复用项目组件实现列表与状态反馈。"
+    },
+    {
+      "id": "TASK-04",
+      "title": "回答引用与全流程验收",
+      "version_id": "V0.1",
+      "requirement_ids": [
+        "REQ-01",
+        "REQ-02"
+      ],
+      "owner": "前端 / 测试",
+      "module": "问答页 / 全流程验证",
+      "status": "blocked",
+      "depends_on": [
+        "TASK-02",
+        "TASK-03"
+      ],
+      "deliverable": "可点击核对的引用，以及完整流程验证记录",
+      "exit_criteria": [
+        "导入、提问、核对原文完整走通",
+        "刷新、重试、无依据和移动布局通过验证"
+      ],
+      "evidence_ids": [],
+      "blocker": "示例依赖尚未实现，无法执行全流程验收。",
+      "next_action": "依赖完成后用真实资料核对引用与恢复行为。"
+    }
+  ],
+  "gates": [
+    {
+      "id": "GATE-LOCAL",
+      "version_id": "V0.1",
+      "title": "本地流程验证",
+      "kind": "local",
+      "required": true,
+      "status": "pending",
+      "evidence_ids": [],
+      "reason": "",
+      "next_action": "运行接口检查与桌面 / 窄屏浏览器流程。"
+    },
+    {
+      "id": "GATE-DEPLOY",
+      "version_id": "V0.1",
+      "title": "目标环境交付",
+      "kind": "deploy",
+      "required": true,
+      "status": "pending",
+      "evidence_ids": [],
+      "reason": "",
+      "next_action": "本地验证后，按该项目实际发布要求执行。"
+    },
+    {
+      "id": "GATE-ONLINE",
+      "version_id": "V0.1",
+      "title": "目标环境验收",
+      "kind": "online",
+      "required": true,
+      "status": "pending",
+      "evidence_ids": [],
+      "reason": "",
+      "next_action": "交付后重新核对导入、提问与引用流程。"
+    }
+  ],
+  "evidence": [],
+  "decisions": [],
+  "archive": [],
+  "blueprint": {
+    "positioning": "虚构示例：把资料导入、带依据的提问和原文核对连成可观察的完整流程。",
+    "users": [
+      {
+        "role": "项目成员",
+        "need": "从资料中找到能核查的答案",
+        "success": "答案可定位原文，失败原因可见"
+      },
+      {
+        "role": "项目负责人",
+        "need": "理解范围、技术边界与迭代顺序",
+        "success": "每项需求都能追到任务与验收"
+      }
+    ],
+    "journey": [
+      {
+        "id": "JOURNEY-1",
+        "title": "资料导入",
+        "actor": "项目成员",
+        "action": "让用户知道资料何时可检索",
+        "object": "Document / ParseJob",
+        "output": "输入资料成为带状态的可追溯对象",
+        "module_ids": [
+          "MOD-INGEST"
+        ],
+        "exception": "失败保留已完成步骤并说明恢复条件"
+      },
+      {
+        "id": "JOURNEY-2",
+        "title": "证据问答",
+        "actor": "项目成员",
+        "action": "把问题转成有依据的回答",
+        "object": "Query / AnswerEvidence",
+        "output": "回答与原文片段绑定，缺依据时明确反馈",
+        "module_ids": [
+          "MOD-ANSWER"
+        ],
+        "exception": "失败保留已完成步骤并说明恢复条件"
+      },
+      {
+        "id": "JOURNEY-3",
+        "title": "团队资料空间",
+        "actor": "项目成员",
+        "action": "限定谁可以使用哪些资料",
+        "object": "Membership / Visibility",
+        "output": "把共享和访问范围作为后续交付",
+        "module_ids": [
+          "MOD-TEAM"
+        ],
+        "exception": "失败保留已完成步骤并说明恢复条件"
+      }
+    ],
+    "modules": [
+      {
+        "id": "MOD-INGEST",
+        "name": "资料导入",
+        "positioning": "让用户知道资料何时可检索",
+        "value": "输入资料成为带状态的可追溯对象",
+        "users": [
+          "项目成员"
+        ],
+        "stories": [
+          "当我使用资料导入时，我需要看到动作结果和失败恢复入口。"
+        ],
+        "requirement_ids": [
+          "REQ-01"
+        ],
+        "pages": [
+          {
+            "id": "PAGE-1",
+            "name": "资料导入入口",
+            "purpose": "输入资料成为带状态的可追溯对象",
+            "interactions": [
+              "上传→处理中→可检索 / 可重试失败",
+              "核对结果并根据失败原因重试"
+            ],
+            "states": [
+              "正常",
+              "空数据",
+              "进行中",
+              "失败可恢复"
+            ],
+            "route": "/documents",
+            "priority": "P0",
+            "status": "planned",
+            "reality": "planned",
+            "task_ids": [
+              "TASK-01",
+              "TASK-03"
+            ],
+            "evidence_ids": []
+          }
+        ],
+        "technology": {
+          "strategy": "先约定对象与状态，再按项目已有技术实现；示例未选择具体运行栈。",
+          "key_tech": [
+            "持久状态合同",
+            "可追溯引用"
+          ],
+          "objects": [
+            {
+              "name": "Document / ParseJob",
+              "states": [
+                "上传",
+                "处理中",
+                "可检索 / 可重试失败"
+              ],
+              "truth": "由项目实际领域服务保存，示例不声称已实现"
+            }
+          ],
+          "apis": [
+            {
+              "method": "待定义",
+              "path": "/documents",
+              "purpose": "输入资料成为带状态的可追溯对象"
+            }
+          ],
+          "risks": [
+            {
+              "risk": "界面显示成功与服务记录不一致",
+              "mitigation": "完成后重新读取服务端状态并保留失败恢复路径"
+            }
+          ],
+          "mechanism": "资料导入把用户动作转换为Document / ParseJob，下游只消费有明确状态和来源的结果。"
+        }
+      },
+      {
+        "id": "MOD-ANSWER",
+        "name": "证据问答",
+        "positioning": "把问题转成有依据的回答",
+        "value": "回答与原文片段绑定，缺依据时明确反馈",
+        "users": [
+          "项目成员"
+        ],
+        "stories": [
+          "当我使用证据问答时，我需要看到动作结果和失败恢复入口。"
+        ],
+        "requirement_ids": [
+          "REQ-02"
+        ],
+        "pages": [
+          {
+            "id": "PAGE-2",
+            "name": "证据问答入口",
+            "purpose": "回答与原文片段绑定，缺依据时明确反馈",
+            "interactions": [
+              "提问→检索→回答 / 依据不足",
+              "核对结果并根据失败原因重试"
+            ],
+            "states": [
+              "正常",
+              "空数据",
+              "进行中",
+              "失败可恢复"
+            ],
+            "route": "/ask",
+            "priority": "P0",
+            "status": "planned",
+            "reality": "planned",
+            "task_ids": [
+              "TASK-02",
+              "TASK-04"
+            ],
+            "evidence_ids": []
+          }
+        ],
+        "technology": {
+          "strategy": "先约定对象与状态，再按项目已有技术实现；示例未选择具体运行栈。",
+          "key_tech": [
+            "持久状态合同",
+            "可追溯引用"
+          ],
+          "objects": [
+            {
+              "name": "Query / AnswerEvidence",
+              "states": [
+                "提问",
+                "检索",
+                "回答 / 依据不足"
+              ],
+              "truth": "由项目实际领域服务保存，示例不声称已实现"
+            }
+          ],
+          "apis": [
+            {
+              "method": "待定义",
+              "path": "/ask",
+              "purpose": "回答与原文片段绑定，缺依据时明确反馈"
+            }
+          ],
+          "risks": [
+            {
+              "risk": "界面显示成功与服务记录不一致",
+              "mitigation": "完成后重新读取服务端状态并保留失败恢复路径"
+            }
+          ],
+          "mechanism": "证据问答把用户动作转换为Query / AnswerEvidence，下游只消费有明确状态和来源的结果。"
+        }
+      },
+      {
+        "id": "MOD-TEAM",
+        "name": "团队资料空间",
+        "positioning": "限定谁可以使用哪些资料",
+        "value": "把共享和访问范围作为后续交付",
+        "users": [
+          "项目成员"
+        ],
+        "stories": [
+          "当我使用团队资料空间时，我需要看到动作结果和失败恢复入口。"
+        ],
+        "requirement_ids": [
+          "REQ-03"
+        ],
+        "pages": [
+          {
+            "id": "PAGE-3",
+            "name": "团队资料空间入口",
+            "purpose": "把共享和访问范围作为后续交付",
+            "interactions": [
+              "邀请→授权→撤销",
+              "核对结果并根据失败原因重试"
+            ],
+            "states": [
+              "正常",
+              "空数据",
+              "进行中",
+              "失败可恢复"
+            ],
+            "route": "待确定",
+            "priority": "P1",
+            "status": "planned",
+            "reality": "planned",
+            "task_ids": [],
+            "evidence_ids": []
+          }
+        ],
+        "technology": {
+          "strategy": "先约定对象与状态，再按项目已有技术实现；示例未选择具体运行栈。",
+          "key_tech": [
+            "检索前访问过滤"
+          ],
+          "objects": [
+            {
+              "name": "Membership / Visibility",
+              "states": [
+                "邀请",
+                "授权",
+                "撤销"
+              ],
+              "truth": "由项目实际领域服务保存，示例不声称已实现"
+            }
+          ],
+          "apis": [
+            {
+              "method": "待定义",
+              "path": "待确定",
+              "purpose": "把共享和访问范围作为后续交付"
+            }
+          ],
+          "risks": [
+            {
+              "risk": "界面显示成功与服务记录不一致",
+              "mitigation": "完成后重新读取服务端状态并保留失败恢复路径"
+            }
+          ],
+          "mechanism": "团队资料空间把用户动作转换为Membership / Visibility，下游只消费有明确状态和来源的结果。"
+        }
+      }
+    ],
+    "architecture": {
+      "summary": "前端提交用户动作，领域服务产生持久对象，检索与生成消费这些对象，结果带证据返回。图中均为待实现方案。",
+      "layers": [
+        {
+          "id": "LAYER-UI",
+          "name": "用户交互层",
+          "responsibility": "提交动作、显示真实状态与引用",
+          "module_ids": [
+            "MOD-INGEST",
+            "MOD-ANSWER"
+          ]
+        },
+        {
+          "id": "LAYER-DOMAIN",
+          "name": "领域服务层",
+          "responsibility": "处理状态、权限、检索与回答合同",
+          "module_ids": [
+            "MOD-INGEST",
+            "MOD-ANSWER",
+            "MOD-TEAM"
+          ]
+        },
+        {
+          "id": "LAYER-DATA",
+          "name": "数据与证据层",
+          "responsibility": "保存文档、片段、任务状态和引用关系",
+          "module_ids": [
+            "MOD-INGEST",
+            "MOD-ANSWER"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "to": "LAYER-DOMAIN",
+          "label": "用户动作与查询",
+          "from": "LAYER-UI"
+        },
+        {
+          "to": "LAYER-DATA",
+          "label": "读写状态与证据",
+          "from": "LAYER-DOMAIN"
+        }
+      ],
+      "flows": [
+        {
+          "id": "FLOW-ASK",
+          "title": "从资料到可核查回答",
+          "steps": [
+            {
+              "from": "用户",
+              "to": "导入服务",
+              "action": "提交资料",
+              "data": "文档与处理任务"
+            },
+            {
+              "from": "导入服务",
+              "to": "检索服务",
+              "action": "解析完成后开放检索",
+              "data": "片段与原文位置"
+            },
+            {
+              "from": "检索服务",
+              "to": "用户",
+              "action": "返回答案与引用",
+              "data": "回答、文档和位置"
+            }
+          ],
+          "failure": "解析失败不可标为可检索；无依据时返回明确说明。"
+        }
+      ]
+    },
+    "development": {
+      "principles": [
+        {
+          "title": "按对象合同解耦",
+          "practice": "先定义资料状态与引用形状，再并行前后端。"
+        },
+        {
+          "title": "验证形成下一轮输入",
+          "practice": "失败记录关联任务和退出条件，只对相关范围返工。"
+        }
+      ],
+      "batches": [
+        {
+          "id": "BATCH-01",
+          "version_id": "V0.1",
+          "title": "对象与状态合同",
+          "status": "current",
+          "goal": "统一资料状态与引用形状",
+          "why": "前后端需要先共享数据语义",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "entry_conditions": [
+            "需求范围和验收条件明确"
+          ],
+          "exit_criteria": [
+            "状态、字段和异常恢复合同可查"
+          ]
+        },
+        {
+          "id": "BATCH-02",
+          "version_id": "V0.1",
+          "title": "服务与页面并行实现",
+          "status": "next",
+          "goal": "形成完整问答链路",
+          "why": "稳定合同后按模块可以并行",
+          "task_ids": [
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "entry_conditions": [
+            "首批合同已确认"
+          ],
+          "exit_criteria": [
+            "主流程与异常路径通过实际验证"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "level": "接口与领域状态",
+          "method": "按目标项目测试工具实现正反样本",
+          "evidence": "带版本、环境、输入和结果的报告"
+        },
+        {
+          "level": "真实用户流程",
+          "method": "桌面和窄屏执行导入、提问与核对",
+          "evidence": "截图与交互记录"
+        }
+      ],
+      "sync_note": "修改源数据后重新生成工作台；示例不执行产品开发。"
+    },
+    "evolution": [
+      {
+        "id": "DELTA-01",
+        "version_id": "V0.1",
+        "title": "从上传按钮到可追溯处理流程",
+        "problem": "上传结束不能说明资料能被检索",
+        "before": "只能看到提交成功",
+        "after": "处理状态可重读，失败可恢复",
+        "rationale": "让用户依据真实状态采取下一步",
+        "impact": "资料对象、接口与前端状态同时受影响",
+        "source": "虚构示例需求"
+      }
+    ]
+  },
+  "governance": {
+    "design": {
+      "principles": [
+        {
+          "title": "先行动后解释",
+          "rule": "关键动作、状态与恢复入口相邻；此为示例建议。"
+        }
+      ],
+      "tokens": [
+        {
+          "name": "--color-text",
+          "value": "#172033",
+          "purpose": "示例正文色，目标项目需确认"
+        }
+      ],
+      "components": [
+        {
+          "name": "任务状态条",
+          "usage": "显示持久任务阶段，未知耗时不编百分比",
+          "states": [
+            "待开始",
+            "执行中",
+            "完成",
+            "失败可重试"
+          ]
+        }
+      ],
+      "ai_rules": [
+        "先读取项目现有设计规范",
+        "先给页面对象与状态矩阵，再实现",
+        "用浏览器验证桌面与窄屏，证据回写任务"
+      ],
+      "checks": [
+        "主行动可达",
+        "刷新状态一致",
+        "空态与失败可恢复"
+      ],
+      "source": "虚构示例建议，不代表任一项目已采用"
+    },
+    "stack": [
+      {
+        "id": "CHOICE-01",
+        "area": "状态存储",
+        "choice": "由目标项目现有存储确定",
+        "alternatives": [
+          "本地文件",
+          "关系数据库"
+        ],
+        "why": "存储选择取决于并发、恢复与部署约束，不能由工作台框架代替项目决策。",
+        "tradeoffs": [
+          "文件简单，但需处理并发写入",
+          "数据库便于事务，但增加运行依赖"
+        ],
+        "status": "proposed",
+        "version_id": "V0.1",
+        "source": "示例选型问题，未作实际决定"
+      }
+    ],
+    "testing": {
+      "strategy": "从对象状态到用户完整流程分别验证，规范与运行结果分开。",
+      "levels": [
+        {
+          "name": "领域合同",
+          "scope": "资料状态与引用完整性",
+          "command": "",
+          "pass_criteria": "成功、失败与重试状态按合同流转",
+          "evidence": "目标项目的实际测试报告"
+        },
+        {
+          "name": "端到端",
+          "scope": "导入→提问→引用核对",
+          "command": "",
+          "pass_criteria": "完整主流程和失败恢复可观察",
+          "evidence": "实际浏览器操作记录"
+        }
+      ],
+      "critical_paths": [
+        {
+          "title": "处理中刷新",
+          "steps": [
+            "导入资料",
+            "处理期间刷新",
+            "重读处理状态"
+          ],
+          "expected": "同一任务仍可查，不能重复创建",
+          "recovery": "失败后保留任务并给可重试入口"
+        }
+      ],
+      "rules": [
+        "不把模拟数据通过当生产验收",
+        "每项通过结果记录版本、环境、时间与报告"
+      ],
+      "source": "虚构示例测试合同，尚无执行结果"
+    },
+    "releases": [
+      {
+        "id": "RELEASE-01",
+        "version_id": "V0.1",
+        "environment": "目标环境待确定",
+        "state": "planned",
+        "artifact": "待构建",
+        "recorded_at": "2026-09-11T17:00:00+08:00",
+        "changes": [
+          "资料状态与证据问答"
+        ],
+        "preflight": [
+          "本地流程验证通过",
+          "确认目标环境与实际发布要求"
+        ],
+        "deploy_steps": [
+          "按项目部署流程交付固定版本产物",
+          "重新验证目标环境主流程"
+        ],
+        "rollback": "由目标项目在发布前确认旧版本与数据兼容的恢复方案",
+        "evidence_ids": [],
+        "notes": "示例发布计划，不代表已经部署。"
+      }
+    ]
+  },
+  "discovery": {
+    "brief": {
+      "raw_request": "我想做一个团队文档助手，能问资料里的问题，之后也许让大家共享。",
+      "users": "首批为项目成员；后续共享对象待明确。",
+      "problem": "成员需要在资料中找答案并核对来源。",
+      "scenario": "导入项目资料后提问，回答时查看原文。",
+      "outcome": "减少查找和核对信息的时间，同时知道答案依据。",
+      "success_metrics": [
+        "以代表性问答检查原文定位是否正确；目标阈值待用户与样例共同确定。"
+      ],
+      "constraints": [
+        "示例全为虚构，不表示真实项目的已确认业务事实。"
+      ],
+      "non_goals": [
+        "V0.1 不默认开通跨成员共享。"
+      ],
+      "ai_role": "帮助检索与组织回答；用户查看依据并决定是否采用。",
+      "baseline": "先与关键词搜索和直接阅读原文对照。",
+      "source": "SPEC.md 中的虚构场景；不是访谈结论或真实产品验证。"
+    },
+    "questions": [
+      {
+        "id": "Q-SHARE",
+        "question": "下一版的资料共享，首先要支持哪种范围？",
+        "why": "这会影响成员身份、权限校验、检索过滤和验收样例。",
+        "blocking": true,
+        "requirement_ids": [
+          "REQ-03"
+        ],
+        "version_id": "V0.2",
+        "status": "open",
+        "options": [
+          {
+            "id": "QOPT-TEAM",
+            "label": "项目内共享",
+            "description": "由成员加入同一项目后访问资料。"
+          },
+          {
+            "id": "QOPT-INVITE",
+            "label": "逐份邀请",
+            "description": "每份资料单独授权给指定成员。"
+          }
+        ],
+        "selected_option_id": null,
+        "answer": "",
+        "answer_source": "",
+        "answered_at": "",
+        "next_action": "先选首个真实共享场景；若无法决定，用两段角色访问流程对比。"
+      }
+    ],
+    "proposals": [
+      {
+        "id": "PROP-SHARE",
+        "title": "共享资料的最小可用方案",
+        "question_ids": [
+          "Q-SHARE"
+        ],
+        "requirement_ids": [
+          "REQ-03"
+        ],
+        "version_id": "V0.2",
+        "blocking": true,
+        "options": [
+          {
+            "id": "OPT-PROJECT",
+            "title": "按项目统一共享",
+            "summary": "以项目作为资料与成员的共同访问范围。",
+            "fit": "成员稳定、主要协作发生在同一项目内。",
+            "scope": [
+              "项目成员归属",
+              "按项目过滤检索结果"
+            ],
+            "benefits": [
+              "规则容易理解",
+              "首轮验收场景集中"
+            ],
+            "tradeoffs": [
+              "权限粒度较粗"
+            ],
+            "effort": "相对较低；需先核对已有账号与项目结构。",
+            "risks": [
+              "资料放错项目会影响可见范围。"
+            ],
+            "validation": "用两个项目、不同成员和相同问题，检查是否出现跨项目内容。"
+          },
+          {
+            "id": "OPT-INVITE",
+            "title": "按资料单独授权",
+            "summary": "资料所有者逐份授予指定成员访问权。",
+            "fit": "跨项目合作较多、资料敏感度差异较大。",
+            "scope": [
+              "资料级访问表",
+              "邀请与撤销",
+              "全链路检索权限过滤"
+            ],
+            "benefits": [
+              "控制更细",
+              "支持临时合作"
+            ],
+            "tradeoffs": [
+              "操作和权限状态更复杂"
+            ],
+            "effort": "相对较高；复杂度来自授权生命周期与撤销后的索引过滤。",
+            "risks": [
+              "撤销不同步会留下过期访问。"
+            ],
+            "validation": "覆盖邀请、撤销、缓存和检索结果四种路径。"
+          }
+        ],
+        "recommended_option_id": "OPT-PROJECT",
+        "recommendation_reason": "如果首批用户属于稳定项目，统一范围更容易验证；若真实场景要求逐份授权，则改选后一方案。",
+        "status": "proposed",
+        "selected_option_id": null,
+        "decision": "",
+        "decision_source": "",
+        "decided_at": ""
+      }
+    ],
+    "assumptions": [
+      {
+        "id": "ASM-TEAM",
+        "statement": "首批用户可能在固定项目内协作。",
+        "risk": "若主要是跨项目临时分享，项目范围方案不合适。",
+        "validation": "访谈首批使用者或用最近一次分享任务走查。",
+        "status": "unverified",
+        "source": "示例中的推测，尚无用户回答。"
+      }
+    ]
+  }
+}
