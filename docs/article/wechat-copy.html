@@ -1,77 +1,87 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>我把 AI 产品开发工作台开源了：从模糊需求到可验收的产品 · 正文复制</title><style>*{box-sizing:border-box}body{margin:0;background:#f2f5ef;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#243b32}a{color:#246848}.shell{max-width:940px;margin:0 auto;padding:32px 24px 70px}.top{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap;font-size:13px;margin:0 0 24px}.hero{padding:38px 40px;background:#173e34;border-radius:20px;color:#f3f7f0}.eyebrow{font-size:12px;letter-spacing:2px;color:#add1bc}h1{font-size:34px;line-height:1.45;margin:15px 0}.sub{font-size:14px;line-height:1.8;color:#c1d7c7}.paper{background:#fff;border:1px solid #e1e7de;border-radius:18px;padding:28px 58px 48px;margin-top:22px}.toolbar{padding:20px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.toolbar button{cursor:pointer;border:1px solid #a9bfae;border-radius:8px;background:#fff;color:#214a35;padding:11px 16px;font:inherit}.toolbar button.primary{background:#24553f;color:white}.note{font-size:13px;line-height:1.7;color:#687b6d}#copy-status{min-height:24px;font-size:14px}code{overflow-wrap:anywhere;font-family:ui-monospace,monospace}article{overflow-wrap:break-word}article>p:has(>img){margin-left:-20px!important;margin-right:-20px!important}article ul,article ol{padding-left:24px}footer{margin:30px 0;color:#687b6d;font-size:13px;line-height:1.8}@media(max-width:600px){.shell{padding:16px 14px 36px}.hero{padding:25px 22px;border-radius:14px}h1{font-size:27px}.paper{padding:16px 19px 30px;border-radius:12px}article>p:has(>img){margin-left:-8px!important;margin-right:-8px!important}article h2{font-size:22px!important}article pre{padding:12px!important;font-size:12px!important}article table{font-size:12px!important}article td,article th{padding:5px!important}}</style></head><body><main class="shell"><nav class="top"><a href="https://github.com/wanghui2323/ai-product-workbench">AI 产品开发工作台 / GitHub</a><a href="index.html">← 返回阅读版</a></nav><header class="hero"><div class="eyebrow">OPEN SOURCE / 从需求到交付</div><h1>我把 AI 产品开发工作台开源了：从模糊需求到可验收的产品</h1><div class="sub">一套可以带到其他项目的 AI 协作协议、项目记录与可视化工作台。</div></header><div class="toolbar"><button class="primary" id="copy-body">复制正文</button><button id="select-body">选中正文</button><a href="assets/cover.png">单独打开封面</a></div><p class="note">复制范围仅含正文。标题与封面单独使用；本地复制结果需在目标编辑器核对，本文尚未发布到公众号。</p><p role="status" id="copy-status"></p><section class="paper"><article id="article-body"><p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">你让 AI 做一个文档助手：“团队随时能问资料，最好还能把答案分享给客户。”它很快做出上传、提问、回答和分享按钮。你把链接发给同事，对方却打不开引用；换个账号，又看到了原本无权访问的内容。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">问题出在哪里？“可以分享”这四个字里，藏着接收人、资料权限、引用可见性和失效后的处理方式。界面实现了一个动作，产品要兑现的结果却没有被说清。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">这是一个虚构的教学场景，后文的对话与方案都用来解释机制，不代表真实用户访谈或已上线产品。它也对应产品经理和 AI builder 经常要做的判断：哪些信息足够开始开发，哪些选择必须让用户作出，最后拿什么证明东西真的能用？</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">我把这套协作方式整理成了 <strong>AI 产品开发工作台</strong>，已经以 MIT 许可证开源，并提供可安装的 skill。Skill 是供 Coding Agent 读取的工作协议，配合项目记录、校验工具和网页视图，让 AI 接手时知道先读什么、该问什么、选择之后改哪里、完成以后留什么证据。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">这套工作方式的主线可以顺着一个需求走到底。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="决策怎样走到交付" src="assets/01-workflow.png" /></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><em>图 1：对话产生理解与决策，项目记录保留关系和依据，视图让人检查当前状态。</em></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">面对开头的请求，我希望 AI 先停在几个真正会改变方案的问题上：</p>
-<ol>
-<li style="margin:10px 0;font-size:17px;line-height:1.85;"><strong>谁能看到什么？</strong> 首版给你个人、项目成员，还是外部客户使用？资料是否已经有访问限制？</li>
-<li style="margin:10px 0;font-size:17px;line-height:1.85;"><strong>先解决哪一种找资料的任务？</strong> 给一个典型问题，再说明目前怎样找、什么结果算找到，才能建立比较基线。</li>
-<li style="margin:10px 0;font-size:17px;line-height:1.85;"><strong>缺少依据时怎么办？</strong> 应补问、显示未找到，还是交给人处理？这决定答案承诺和失败路径。</li>
-</ol>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">问题不在于把访谈问卷问全，而在于找出当前实现依赖的答案。Microsoft 的意图澄清文档也把提问和提供选项用于缩小歧义；每轮通常控制在一到三个关键问题，是这套工作台的交互约定，并非官方规定的固定数量。<a style="color:#276d52;text-decoration:underline;overflow-wrap:anywhere;" href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/cux-disambiguate-intent">Microsoft：澄清用户意图</a></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">“目前怎样找”尤其容易被忽略。如果现有文档目录和搜索已经能快速找到原文，生成一段更顺滑的文字未必增加价值。我们应比较用户完成同一任务的过程：能否找到正确依据、减少多少人工核对、失败时能否继续。Google PAIR 建议先理解现有工作流，并判断 AI 相对规则等方案能增加什么独特价值。<a style="color:#276d52;text-decoration:underline;overflow-wrap:anywhere;" href="https://pair.withgoogle.com/chapter/user-needs/">Google PAIR：用户需要与成功定义</a></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">在答案还不充分时，可以先把差异最大的路线摆出来。以这个文档助手为例，真正不同的不是按钮多少，而是谁参与、系统承担什么责任。</p>
-<table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.65;">
-<thead>
-<tr>
-<th style="border:1px solid #d8e2da;padding:8px;background:#eff5f0;">候选路线</th>
-<th style="border:1px solid #d8e2da;padding:8px;background:#eff5f0;">适合先验证什么</th>
-<th style="border:1px solid #d8e2da;padding:8px;background:#eff5f0;">必须付出的代价</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="border:1px solid #d8e2da;padding:8px;">个人资料助手</td>
-<td style="border:1px solid #d8e2da;padding:8px;">一个人能否从自己的资料得到有依据的答案</td>
-<td style="border:1px solid #d8e2da;padding:8px;">暂时不能验证协作价值</td>
-</tr>
-<tr>
-<td style="border:1px solid #d8e2da;padding:8px;">项目内分享</td>
-<td style="border:1px solid #d8e2da;padding:8px;">同事能否共同使用答案，并回到自己有权访问的原文</td>
-<td style="border:1px solid #d8e2da;padding:8px;">需要成员、资料权限与分享访问的一致性</td>
-</tr>
-<tr>
-<td style="border:1px solid #d8e2da;padding:8px;">外部客户分享</td>
-<td style="border:1px solid #d8e2da;padding:8px;">客户能否自助获取允许对外的信息</td>
-<td style="border:1px solid #d8e2da;padding:8px;">要重新定义对外内容、访问方式、撤回与维护责任</td>
-</tr>
-</tbody>
-</table>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">如果当前目标是团队协作，而且已有项目资料范围，我会推荐先验证项目内分享。它能检验协作价值，也能把外部访问的额外分歧留到后续。推荐的前提应写在桌面上；用户也可以自由回答、组合路线，或者先用一个案例比较，暂时不选择。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">继续这个虚构场景，用户明确回复：“首版只给项目成员用，成员只能看到自己有权访问的资料。答案可以在项目内分享并查看引用，客户外链以后再议。”</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><strong>从这一刻起，系统才获得了一项可以落实的产品决策。</strong> 工作台把原话、来源、日期和所选范围记录下来，将它关联到分享需求。外部客户的渠道仍然未定，不会因为推荐列表里有这一项，就自动进入已选范围。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">这种关联要用稳定的标识保留。例如，一个分享需求关联哪些任务、哪些用例和哪个版本，即使标题后来改了，也能沿原来的关系追过去。只有文档标题和一串勾选框，AI 下次接手时很难判断“分享完成”到底对应哪次讨论。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">接下来才进入七个管理域。它们分别保存同一项决策带来的不同后果。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="一项选择影响七域" src="assets/02-decision.png" /></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><em>图 2：判断是否同步完成，要看受影响的行为与验收是否一起改变。</em></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">在<strong>需求方案</strong>里，“支持分享”要变成可观察的用户行为：项目成员打开答案后，能查看有权访问的内容与引用；无权限或引用失效时，得到明确结果。于是验收对象从“按钮能生成链接”变成“正确的人获得正确内容”。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">这会直接改变<strong>技术方案</strong>。系统需要区分提问者、项目、文档、答案和引用。检索开始前，后端按身份与资料权限确定可用范围；模型据此生成答案，答案保存所依据的文档标识和版本。接收者打开分享时，还要检查他当时的访问权限，不能把提问者的权限直接借给接收者。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">这里的关键机制是两次边界检查：生成时限制输入，访问时限制输出。文档权限后来撤回，旧答案里的内容也可能不再适合展示。在这条教学方案中，可以先把相关答案标为不可访问并说明原因，再讨论是否需要部分遮蔽。仅在提示词里写“不要泄露”，无法替代后端的身份判断与数据过滤。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">有了这些约束，<strong>技术选型方案</strong>才有讨论基础。若任务是从固定资料中回答问题，可以先比较现有搜索、检索后生成和更复杂的自主执行流程。先用相同问题检查依据是否准确、引用是否可用，再分别观察时延和费用。即使换一个生成能力更强的模型，也不会自动补上成员权限和引用管理。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><strong>视觉交互 AI 规范</strong>则要让用户看懂系统正在做什么。生成中的回答、已经保存的答案、待核查的引用和不可访问的内容，需要不同状态。分享入口应让人知道接收范围；失败时能返回原问题、补充资料或寻求帮助。把这些状态写进页面合同，AI 改页面时才有明确的行为依据，而不只是颜色与间距。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><strong>开发计划及模式</strong>要按依赖排顺序。先约定身份、文档与答案之间的接口和状态，再实现检索范围、引用记录与访问校验；随后走通提问到分享的完整流程。接口合同稳定后，页面和服务可以分工并行；多人或多个 Agent 同时改一套尚未确定的对象定义，只会放大不一致。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">未决问题也有范围。客户外链没决定，可以暂停依赖外链的设计；项目内资料解析、引用定位等已确定且独立的工作仍可继续。反过来，如果“同事是否有权看这些资料”还没答案，相关分享需求就不应被标为已确认或进入实现。工作台中的阻塞关系由此控制具体任务，而不是把整个项目锁住。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">到了<strong>测试规范</strong>，用例必须保留前面作出的选择。除了正常提问，还应检查：接收者没有权限、成员退出项目、原文删除、资料不足以支持答案。答案写得通顺但引用错了，是失败；接口返回成功但无权用户仍能读到内容，同样是失败。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">这也解释了为什么需要区分模型输出与最终结果。Anthropic 的 Agent 评测方法明确区分执行记录与环境中的最终状态：模型宣称任务完成，并不能代替结果核查。对文档助手，除了读回答文本，还要实际检查权限、引用和接收者看到的页面。<a style="color:#276d52;text-decoration:underline;overflow-wrap:anywhere;" href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic：理解 Agent 评测</a></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">最后，<strong>上线版本管理</strong>要能回答“交付的是刚才测过的哪一套东西”。包含 AI 能力时，只保存代码版本还不够，还要能追到模型标识、提示词、工具配置、知识源或索引，以及所用评测集。LangSmith 将一次实验描述为某个应用版本在一个数据集上的评估结果；这个对应关系让版本比较有共同基础。<a style="color:#276d52;text-decoration:underline;overflow-wrap:anywhere;" href="https://docs.langchain.com/langsmith/evaluation-concepts">LangSmith：评测概念</a></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">工作台可以链接已有配置与报告，不要求项目为了填表再接一套实验平台。对这个示例，发布记录应能回到那次权限与引用检查；如果临发布前更换了知识索引，旧报告是否仍适用就需要重新判断。一次接口通过记录，也不能扩写成整个产品已经验收。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><strong>状态是一种有范围的结论，证据决定这个结论能说到哪里。</strong></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="证据约束完成状态" src="assets/03-evidence.png" /></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><em>图 3：实现、退出条件验证、本地检查与目标环境交付，证明的是不同层次的事实。</em></p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">任务写完了，可以记为 <code>done</code>，意思是实现完成。要记为 <code>accepted</code>，还需要与该任务退出条件相匹配的证据。比如分享任务的报告，至少能说明用哪个身份、打开哪个答案、权限条件是什么，以及实际看到了什么。另一条上传接口的报告不能拿来替它通过。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">版本的 <code>local_verified</code> 说明本地约定检查通过。要声明 <code>released</code>，还需有目标交付和目标环境验证依据。页面在开发者电脑上能打开，不代表另一位项目成员在目标环境中能完成同一条流程。这些状态也不能串成一个对象的统一进度条：任务验收和版本交付各有自己的范围。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">如果新检查发现越权，应追加失败证据，并回退受影响的状态，保留之前的记录。这样才能回答：旧检查漏了什么，是访问路径改变、权限条件变化，还是实现退化？工作台校验器可以检查证据是否存在、版本是否匹配、状态是否矛盾；它无法读懂所有报告并保证结论真实，AI 和人仍需核对原始结果。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">你可能会问：这些事情，普通 Markdown 也能记，为什么还要做成 skill？</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">当然可以。关键是把协作要求变成下一次会话能继续执行的协议：先读现有项目规则和事实，再澄清方向；记录明确选择，更新它影响的对象；实现之后回写证据；需要交付时检查退出条件。已有 SPEC、ADR 或工作台的项目可以继续使用原入口，不需要先搬进一套新格式。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">随包生成器提供一种具体实现：AI 或人维护 <code>workbench.json</code>，它用结构化文本保存关联和状态；Python 工具先检查字段、引用、依赖及证据，再生成网页。网页负责浏览、搜索、下钻和草拟回答。每个状态只保留一处可编辑来源，避免正文说待验证、卡片却显示完成。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;"><strong>当前网页没有内置 AI 服务或保存服务。</strong> 你在页面填写回答、选择方案后，可以复制给正在协作的 AI；只有收到你的明确回答，AI 才回写项目记录并重新生成页面。页面上的推荐、点击、等待超时，都不会自动成为用户决策。需要网页直接对话、保存或多人同步的项目，还要另建服务层。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">开源仓库是 <a style="color:#276d52;text-decoration:underline;overflow-wrap:anywhere;" href="https://github.com/wanghui2323/ai-product-workbench">wanghui2323/ai-product-workbench</a>。本文对应 <code>v0.2.0</code>，源码中包含独立 skill、生成器、安装脚本和虚构文档助手示例；完整下载包见仓库的 <a style="color:#276d52;text-decoration:underline;overflow-wrap:anywhere;" href="https://github.com/wanghui2323/ai-product-workbench/releases">Releases</a>。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">取得源码后，在仓库根目录运行 <code>python3 scripts/install.py</code>，即可将 skill 安装到 Codex 的 skills 目录；未设置 <code>CODEX_HOME</code> 时，路径为 <code>~/.codex/skills/ai-dev-workbench</code>。在新的 Codex 会话中用 <code>$ai-dev-workbench</code> 调用；其他 Agent 也可以显式读取它的 <code>SKILL.md</code>，自动发现方式依各工具配置。安装流程与更新选项以仓库 README 为准。</p>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">第一次使用，可以直接交给 AI 一段具体要求：</p>
-<blockquote style="margin:22px 0;padding:2px 20px;border-left:4px solid #558b74;background:#eff5f0;">
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">使用 $ai-dev-workbench 为这个项目建立工作台。先读取现有需求、代码和版本事实；需求不清楚时问关键问题并比较方案。把我明确选择的路线落实到相关方案、任务和验收条件，保留尚未决定的内容。</p>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>我把 AI 产品开发工作台开源了：从模糊需求到可验收的产品 · 正文复制</title><style>*{box-sizing:border-box}body{margin:0;background:#fbfaf7;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#243747}a{color:#0b7e89}.shell{max-width:940px;margin:0 auto;padding:32px 24px 70px}.top{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap;font-size:13px;margin:0 0 24px}.hero{padding:38px 40px;background:#14283b;border-radius:20px;color:#f3f7f0}.eyebrow{font-size:12px;letter-spacing:2px;color:#8ed2db}h1{font-size:34px;line-height:1.45;margin:15px 0}.sub{font-size:14px;line-height:1.8;color:#bfd4e0}.cover-preview{display:block;width:100%;height:auto;margin-top:22px;border-radius:14px}.paper{background:#fff;border:1px solid #dfe5e8;border-radius:18px;padding:28px 58px 48px;margin-top:22px}.toolbar{padding:20px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.toolbar button{cursor:pointer;border:1px solid #b7cbd1;border-radius:8px;background:#fff;color:#23495a;padding:11px 16px;font:inherit}.toolbar button.primary{background:#0e727b;color:white}.note{font-size:13px;line-height:1.7;color:#627685}#copy-status{min-height:24px;font-size:14px}code{overflow-wrap:anywhere;font-family:ui-monospace,monospace}article{overflow-wrap:break-word}article>p:has(>img){margin-left:-20px!important;margin-right:-20px!important}article ul,article ol{padding-left:24px}footer{margin:30px 0;color:#627685;font-size:13px;line-height:1.8}@media(max-width:600px){.shell{padding:16px 14px 36px}.hero{padding:25px 22px;border-radius:14px}h1{font-size:27px}.paper{padding:16px 19px 30px;border-radius:12px}article>p:has(>img){margin-left:-17px!important;margin-right:-17px!important}article h2{font-size:22px!important}article pre{padding:12px!important;font-size:12px!important}article table{font-size:12px!important}article td,article th{padding:5px!important}}</style></head><body><main class="shell"><nav class="top"><a href="https://github.com/wanghui2323/ai-product-workbench">AI 产品开发工作台 / GitHub</a><a href="index.html">← 返回阅读版</a></nav><header class="hero"><div class="eyebrow">OPEN SOURCE / 从需求到交付</div><h1>我把 AI 产品开发工作台开源了：从模糊需求到可验收的产品</h1><div class="sub">一套可以带到其他项目的 AI 协作协议、项目记录与可视化工作台。</div></header><div class="toolbar"><button class="primary" id="copy-body">复制正文</button><button id="select-body">选中正文</button><a href="assets/cover.png">单独打开封面</a></div><p class="note">复制范围仅含正文。标题与封面单独使用；本地复制结果需在目标编辑器核对，本文尚未发布到公众号。</p><p role="status" id="copy-status"></p><section class="paper"><article id="article-body"><blockquote style="margin:22px 0;padding:2px 20px;border-left:4px solid #138e97;background:#eaf4f5;">
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">AI 可以很快写出代码，但需求为什么这样定、哪些工作能开始、完成以后拿什么验收，仍需要一条清楚的协作流程。这次开源，我把这条流程做成了可安装的 skill 和可以查看的工作台。</p>
 </blockquote>
-<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263d36;">开始时不用追求把七个页面全部填满。选一个正在推进的需求，让 AI 沿着它回答四件事：<strong>这是谁明确选择的？因此哪些行为改变？哪些任务现在可以做？什么证据允许我们进入下一状态？</strong> 如果其中一项追不到，先修复那条关系。这样，下一轮开发才有一个可以共同判断、可以继续接手的起点。</p></article></section><footer>配图与文章源文件随仓库开放。<a href="article.md">Markdown 原文</a> · <a href="sources.md">来源说明</a> · <a href="../../LICENSE">MIT 许可证</a></footer></main><script>const content=document.getElementById('article-body'),status=document.getElementById('copy-status');function selectBody(){const range=document.createRange();range.selectNodeContents(content);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range)}document.getElementById('select-body').onclick=()=>{selectBody();status.textContent='已选中正文，可用系统复制快捷键。'};document.getElementById('copy-body').onclick=async()=>{const clone=content.cloneNode(true);clone.querySelectorAll('img').forEach(img=>img.src=new URL(img.getAttribute('src'),location.href).href);try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([clone.innerHTML],{type:'text/html'}),'text/plain':new Blob([content.innerText],{type:'text/plain'})})]);status.textContent='正文已复制。请在目标编辑器核对文字、图片与排版。'}catch(e){selectBody();status.textContent='浏览器未开放剪贴板；已选中正文，请按系统复制快捷键。'}};</script></body></html>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">用 AI 开发产品时，需求、方案和代码会不断变化。上一轮说的是“先做个人使用”，下一轮开始讨论团队协作；页面已经能打开，刷新后状态却还没保存。聊天记录里都有解释，接手时仍得重新确认：现在究竟定了什么，下一步从哪里开始？</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">这套工作方式来自我在 LearnBuddy 中整理需求、方案和版本的需要。我把其中可以跨项目复用的部分整理成了 <strong>AI 产品开发工作台</strong>，以 MIT 许可证开源。它把需求澄清、方案选择、开发任务和验收证据连起来，让人和 AI 沿着同一套记录继续推进。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">下面直接打开仓库中的文档助手示例，看看它如何工作。截图来自真实运行的工作台；里面的文档助手业务是虚构教学数据，尚未开发或验收。读完后，你应该能沿一个需求找到它的决策依据、实现依赖和完成条件，并在自己的项目里试一次。</p>
+<h2 style="margin:40px 0 18px;font-size:24px;line-height:1.5;color:#162c40;font-weight:700;">一、先看全貌：对话、记录和网页怎样配合</h2>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">示例的目标是让项目成员导入资料、提问，并核对回答的原文依据。总览里，V0.1 计划完成导入、问答和引用核对，V0.2 候选方向是团队共享；当前没有已上线版本，也没有验收证据。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="计划与未决事项" src="assets/screenshot-overview.png" /></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><em>工作台已经可以浏览，示例业务仍处在计划阶段。总览同时展示当前工作与尚未解决的问题。</em></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">理解这个产品，先分清三个部分的职责。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>AI 对话负责理解和推进。</strong> 它读取项目规则、已有需求和代码事实，发现歧义时提问，给出方案；获得明确选择后，再更新受影响的记录，按用户授权继续工作。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>项目记录负责保留事实和关系。</strong> 谁提出需求、什么问题尚未回答、任务依赖什么、报告证明哪个版本，都应能追溯。随包实现使用 <code>workbench.json</code> 保存这些关联；已有 SPEC、ADR 的项目也可以沿用原入口。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>网页负责让人检查和操作这些信息。</strong> 你可以浏览、搜索、下钻到需求与版本，草拟问题回答或方案选择，再复制给 AI。当前网页没有内置模型调用、保存服务或多人实时同步。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="记录怎样更新为视图" src="assets/01-system.png" /></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><em>AI 根据明确回答更新源文件，校验工具检查关系，再生成可阅读的页面。</em></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">这条更新路径很具体：AI 或人编辑源文件，Python 工具检查字段、引用、依赖和状态约束，通过后重新生成网页。直接在网页上点选，不会改写 JSON；页面也不会在等待一段时间后替用户作决定。每个状态只保留一处可编辑来源，下一轮才不会同时看到“待验证”和“已完成”。</p>
+<h2 style="margin:40px 0 18px;font-size:24px;line-height:1.5;color:#162c40;font-weight:700;">二、需求澄清：先问会改变下一步的问题</h2>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">示例的原始诉求是：“我想做一个团队文档助手，能问资料里的问题，之后也许让大家共享。”其中，“问资料”已经可以形成最小流程，“大家共享”还没有足够明确的访问范围。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">工作台因此保留了一个问题：<strong>下一版的资料共享，首先要支持哪种范围？</strong> 两个选项分别是“项目内共享”和“逐份邀请”。前者由成员加入项目后访问资料，后者给每份资料单独指定可访问的人。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="共享范围仍待回答" src="assets/screenshot-question.png" /></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><em>问题 Q-SHARE 关联共享需求 REQ-03 和候选版本 V0.2；截图中的选项尚未成为用户答案。</em></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">为什么先问它？因为答案会改变成员身份、授权对象、检索过滤和验收场景。若实际协作经常跨项目，直接按项目实现，后面就可能重做权限模型。每轮通常问一到三个关键问题，是这套 skill 的协作约定；重点是说明答案影响什么，并允许用户自由回答。提问和提供选项都可以帮助缩小歧义。<a style="color:#0b7e89;text-decoration:underline;overflow-wrap:anywhere;" href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/cux-disambiguate-intent">Microsoft：意图澄清</a></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">这里还需要一个基线：用户目前怎样找资料，为什么已有搜索不够？示例明确保留“关键词搜索和直接阅读原文”作为对照。生成得更流畅，未必就减少了查找和核对的时间。Google PAIR 也建议先理解现有工作流，再判断 AI 能提供什么额外价值。<a style="color:#0b7e89;text-decoration:underline;overflow-wrap:anywhere;" href="https://pair.withgoogle.com/chapter/user-needs/">Google PAIR：用户需要与成功定义</a></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">问题未解决，不意味着所有工作停下。Q-SHARE 只影响 V0.2 的共享需求；V0.1 已确定的资料状态和引用合同仍可推进。<strong>阻塞要落到它真正影响的范围，计划才不会变成“等所有问题问完再开始”。</strong></p>
+<h2 style="margin:40px 0 18px;font-size:24px;line-height:1.5;color:#162c40;font-weight:700;">三、方案选择：推荐之后，还差一个明确决策</h2>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">问题让用户说清需要，方案则让用户看见实现这个需要的代价。示例中的“共享资料的最小可用方案”比较两条路线。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">“<strong>按项目统一共享</strong>”适合成员稳定、主要在同一项目里协作的情况。资料和成员共享项目边界，规则容易理解，首轮验收集中；代价是权限粒度较粗，资料放错项目可能影响可见范围。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">“<strong>按资料单独授权</strong>”适合跨项目临时合作。每份资料可以独立邀请、撤销访问，控制更细；同时要处理更多权限状态，并保证撤销后，检索和缓存都不再返回无权内容。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="推荐与选择分开记录" src="assets/screenshot-options.png" /></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><em>PROP-SHARE 当前推荐“按项目统一共享”，但两个方案都没有被选中。推荐带前提，选择仍等待用户。</em></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">两条路线的最小验证也不同：前者可以用两个项目、不同成员和同一个问题，检查是否出现跨项目资料；后者需要覆盖邀请、撤销、缓存和检索结果。比较方案时，把验证方式一并写出，才知道怎样检验“更简单”“更灵活”这些判断。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">当前推荐依赖一个尚未验证的假设：首批用户在固定项目内协作。因此工作台保留推荐理由，也保留未决状态。如果用户暂时无法选择，AI 可以先帮助走查两段角色访问流程，而不要求用户凭空确定架构。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">等用户明确回答后，AI 才记录原意、来源、日期和作用范围，并关联问题与方案。选项 ID 用来保持稳定关系，不代替自然语言的决策理由。用户也可以提出新方案；推荐、网页点击和超时都不能算作已确认选择。</p>
+<h2 style="margin:40px 0 18px;font-size:24px;line-height:1.5;color:#162c40;font-weight:700;">四、七域同步：一项选择会怎样改变产品方案</h2>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">需求被确认之后，工作台需要把它落实到七个管理域。这里先沿 V0.1 已排期的“导入后知道资料是否可用”需求看一遍，再看共享决策会改变哪里。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>需求方案先定义可观察的结果。</strong> REQ-01 的验收包括上传、解析、可检索和失败状态，以及刷新后一致、失败可重试。它把“支持上传”展开成了用户下一步能否继续提问的条件。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>技术方案解释这些行为由谁支撑。</strong> 示例提出 <code>Document → ParseJob → Chunk → AnswerEvidence</code>：文档产生处理任务，完成解析后形成可检索片段，回答携带原文依据。处理状态由服务端持久记录，前端刷新后重新读取；上传请求结束，不能直接把文档标成可检索。这是待实现的对象合同，工作台本身没有提供文档解析服务。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>技术选型方案记录为何这样选。</strong> 示例的状态存储仍是 proposed，候选包括本地文件和关系数据库。文件方案运行依赖少，但要处理并发写入；数据库方便事务管理，也增加部署和维护工作。需要结合现有项目、并发和恢复要求作选择，而不是由工作台默认替每个项目选同一种技术栈。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>视觉交互 AI 规范把真实状态变成用户能理解的反馈。</strong> 示例要求任务状态条展示待开始、执行中、完成和失败可重试；耗时未知时不编造百分比。页面对象、状态矩阵和恢复入口先说清，AI 实现时才知道刷新、空态和错误分别应显示什么，设计规范也就不只是一组颜色。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>开发计划及模式根据依赖排顺序。</strong> 当前先做 TASK-01“导入对象与状态合同”；合同稳定后，TASK-02“检索与引用接口”和 TASK-03“资料列表与处理反馈”才能并行；两者完成后再进入 TASK-04 的全流程验收。是否使用多个 Agent，取决于接口和文件责任能否分开。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>测试规范把前面的承诺变成检查动作。</strong> 示例已经写出“导入资料→处理期间刷新→重读状态”的关键路径，预期是同一个任务仍可查，不能重复创建。规范只是预期；执行时还要记录实际环境、输入、结果和失败恢复情况。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><strong>上线版本管理规定这一轮交付到哪里。</strong> V0.1 收入导入、单人资料检索、引用与失败恢复，将多人共享、批量导出和复杂 OCR 列为非目标。发布计划需要进一步确定产物、目标环境、发布前检查与回滚方式，才能知道什么叫本版交付完成。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="决定怎样影响关联工作" src="assets/02-decision-impact.png" /></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><em>一项决定需要落实到受影响的行为、对象、计划、检查和版本边界。</em></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">如果后续明确选择“按项目统一共享”，共享需求就要写清项目边界，技术方案补成员归属与访问过滤，交互显示当前范围，计划增加相应实现，测试加入跨项目隔离，版本冻结交付范围。这些是选择后的联动方向，<strong>当前示例尚未作出该选择，也没有完成这些业务能力</strong>。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">七域不要求每次修改都重写七份文档。一次文案修订可能只影响页面；一次权限决策会影响更多对象。稳定关联的作用，就是帮助 AI 找到应改的范围，并留下未受本轮结论覆盖的内容。</p>
+<h2 style="margin:40px 0 18px;font-size:24px;line-height:1.5;color:#162c40;font-weight:700;">五、执行与证据：什么允许任务进入下一状态</h2>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">当 AI 汇报“已完成”，首先要确认它完成了哪一层。代码和页面已经实现，可以记录为 <code>done</code>；任务达到 <code>accepted</code>，还需要与退出条件匹配的证据。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">例如，TASK-03 要求处理期间刷新后恢复真实状态。只有上传接口返回成功，无法证明这个条件；需要实际导入、刷新、重新读取同一任务，并检查页面状态。一张截图也只能证明截图中可见的结果，不能单独证明刷新或撤销流程已经走通。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">模型的执行记录和环境中的最终结果需要分别检查。Anthropic 的 Agent 评测方法区分 transcript 与 outcome；这种区分同样适用于开发协作中的完成汇报。<a style="color:#0b7e89;text-decoration:underline;overflow-wrap:anywhere;" href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic：理解 Agent 评测</a></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><img style="display:block;width:100%;height:auto;margin:24px auto;border-radius:8px;" alt="版本仍在计划阶段" src="assets/screenshot-release.png" /></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;"><em>示例的 V0.1 是 planned，V0.2 是 candidate，证据列表为空；这些页面展示交付计划，不代表文档助手已经上线。</em></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">版本的 <code>local_verified</code> 说明约定的本地检查通过，<code>released</code> 还需目标交付和目标环境验证依据。任务验收与版本发布属于不同对象，不能串成一个统一进度条。另一版本的报告，也不能直接替当前版本通过。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">产品包含 AI 能力时，还要关联被测的模型、Prompt、工具、知识源和评测版本。否则索引已经换了，报告仍可能描述旧结果。LangSmith 把实验对应到某个应用版本与数据集，这个关系也可以用现有配置文件和报告保留，不必为了工作台接入新的评测平台。<a style="color:#0b7e89;text-decoration:underline;overflow-wrap:anywhere;" href="https://docs.langchain.com/langsmith/evaluation-concepts">LangSmith：评测概念</a></p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">发现新失败后，应追加记录、回退受影响状态，再修复和复测。校验工具能检查证据是否被绑定、版本是否匹配、状态是否矛盾；报告内容是否真实、业务行为是否达标，仍需人和 AI 核对原始结果。</p>
+<h2 style="margin:40px 0 18px;font-size:24px;line-height:1.5;color:#162c40;font-weight:700;">六、做成 skill：让下一次项目也能继续这套流程</h2>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">一个工作台文件能记录这次项目，skill 则把读取与更新的方法带到下一次协作。新需求进来，先读原始诉求与当前范围；开始开发，先读任务依赖和规范；准备交付，再回到退出条件、产物与环境证据。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">因此，可复用的部分是工作协议、记录合同、生成器和校验器。具体业务角色、模块数量、技术栈和发布流程由项目填充。新项目可以从空骨架开始，已有项目则优先沿用 SPEC、ADR 和工作台，不要求为使用工具先搬完全部文档。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">开源仓库是 <a style="color:#0b7e89;text-decoration:underline;overflow-wrap:anywhere;" href="https://github.com/wanghui2323/ai-product-workbench">wanghui2323/ai-product-workbench</a>，已发布版本为 <code>v0.2.0</code>。它包含独立 skill、安装脚本、生成与校验工具，以及本文展示的完整示例。当前网页支持浏览和草拟回复；需要网页直接对话、保存或多人同步时，还要实现相应服务层。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">这套协议也不会把“整理工作台”自动扩展成业务开发。用户要求开发时，AI 才在已有授权内实现、验证并回写。工具生成一页计划，与计划中的产品已经完成，是两件需要分别交付的工作。</p>
+<h2 style="margin:40px 0 18px;font-size:24px;line-height:1.5;color:#162c40;font-weight:700;">七、动手试一次：改一个需求，检查关联有没有跟着变</h2>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">准备 Python 3.10 或以上版本，在终端取得仓库并安装：</p>
+<pre style="white-space:pre-wrap;word-break:break-word;background:#eff3f6;padding:18px;border-radius:8px;font-size:14px;line-height:1.7;"><code class="language-bash">git clone https://github.com/wanghui2323/ai-product-workbench.git
+cd ai-product-workbench
+python3 scripts/install.py
+python3 scripts/verify.py
+python3 -m http.server 8765 --bind 127.0.0.1
+</code></pre>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">安装默认使用 <code>$CODEX_HOME/skills</code>，未设置时使用 <code>~/.codex/skills</code>。在新的 Codex 会话调用 <code>$ai-dev-workbench</code>；其他 Agent 可以显式读取安装目录的 <code>SKILL.md</code>，自动发现方式依各工具配置。安装更新选项以仓库 README 为准。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">保持预览服务运行，打开 <a style="color:#0b7e89;text-decoration:underline;overflow-wrap:anywhere;" href="http://127.0.0.1:8765/examples/document-assistant/docs/workbench/index.html">文档助手工作台</a>。先看三个位置：未回答的共享问题、TASK-01 的退出条件、V0.1 的版本状态。仓库验证通过只证明框架检查通过，示例业务状态仍应保持原样。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">接下来，让 AI 在临时目录复制示例，做一次小范围变更：</p>
+<blockquote style="margin:22px 0;padding:2px 20px;border-left:4px solid #138e97;background:#eaf4f5;">
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">使用 $ai-dev-workbench，在临时目录复制 examples/document-assistant，保持原示例不变，只整理复制后的工作台。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">将 REQ-01 的刷新验收明确为“刷新后仍是同一处理任务，不重复创建，失败可重试”。检查并同步相关任务退出条件、页面交互和测试路径；原先已经一致的内容保留。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">保持共享问题和方案未决，不编造业务实现或证据。完成后校验并重新生成，告诉我改变了哪些关联，给出新的页面路径。</p>
+</blockquote>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">校验和构建使用同一份临时项目数据。让 AI 将下面的 <code>练习目录</code> 替换为实际路径后执行：</p>
+<pre style="white-space:pre-wrap;word-break:break-word;background:#eff3f6;padding:18px;border-radius:8px;font-size:14px;line-height:1.7;"><code class="language-bash">python3 skills/ai-dev-workbench/scripts/workbench.py validate \
+  --project-root &quot;练习目录&quot; \
+  --data &quot;练习目录/docs/workbench/workbench.json&quot; --check-links
+python3 skills/ai-dev-workbench/scripts/workbench.py build \
+  --project-root &quot;练习目录&quot; \
+  --data &quot;练习目录/docs/workbench/workbench.json&quot;
+</code></pre>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">打开新生成的页面，对照需求、任务和测试中的同一条刷新条件；再确认版本没有因此变为已验收，共享方案也没有被选中。你验证的是<strong>一次需求变更能否被正确记录、传播和重新呈现</strong>，不需要先开发一个文档助手。</p>
+<p style="margin:18px 0;font-size:17px;line-height:1.95;color:#263747;">把这一轮换成自己的真实需求时，仍沿同一条线检查：决定从哪里来，改变了什么，下一步为何能做，证据允许状态走到哪里。能把这几件事接起来，AI 写出的代码才更容易进入一轮可以继续协作的产品迭代。</p></article></section><footer>配图与文章源文件随仓库开放。<a href="article.md">Markdown 原文</a> · <a href="sources.md">来源说明</a> · <a href="gallery.html">封面与配图</a> · <a href="../../LICENSE">MIT 许可证</a></footer></main><script>const content=document.getElementById('article-body'),status=document.getElementById('copy-status');function selectBody(){const range=document.createRange();range.selectNodeContents(content);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range)}document.getElementById('select-body').onclick=()=>{selectBody();status.textContent='已选中正文，可用系统复制快捷键。'};document.getElementById('copy-body').onclick=async()=>{const clone=content.cloneNode(true);clone.querySelectorAll('img').forEach(img=>img.src=new URL(img.getAttribute('src'),location.href).href);try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([clone.innerHTML],{type:'text/html'}),'text/plain':new Blob([content.innerText],{type:'text/plain'})})]);status.textContent='正文已复制。请在目标编辑器核对文字、图片与排版。'}catch(e){selectBody();status.textContent='浏览器未开放剪贴板；已选中正文，请按系统复制快捷键。'}};</script></body></html>

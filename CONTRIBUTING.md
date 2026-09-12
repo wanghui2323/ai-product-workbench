@@ -8,4 +8,6 @@
 
 PR 描述包含具体问题、结果行为和验证依据。状态、文件内容和来源都应能被重新核对。提交一个可独立评审的变更；不要在普通修复中顺带改写全部模板或导入私有项目快照。
 
-文章源位于 `docs/article/article.md`，图片保留可编辑 SVG。先用 `python3 -m pip install -r docs/article/requirements.txt` 安装文章制作依赖，再运行 `python3 docs/article/build.py` 生成 HTML 与 SVG；修改图文后，在浏览器按 SVG 原始尺寸重新导出同名 PNG，再核对图片加载和复制正文。文章构建脚本的额外依赖仅影响文章制作，不影响 skill 使用；仓库已提供可直接打开的 HTML 和 PNG。
+文章源位于 `docs/article/article.md`，机制图保留可编辑 SVG。先用 `python3 -m pip install -r docs/article/requirements.txt` 安装文章制作依赖，再运行 `python3 docs/article/build.py` 生成阅读页、复制页、配图库与 SVG；修改机制图后，在浏览器按 SVG 原始尺寸重新导出同名 PNG，再核对图片加载和复制正文。文章构建脚本的额外依赖仅影响文章制作，不影响 skill 使用；仓库已提供可直接打开的 HTML 和 PNG。
+
+真实工作台截图的操作脚本、浏览器配置和来源清单位于 `docs/article/capture-screenshots.*`，以仓库根目录为工作目录、端口 8765 为本地预览服务。重新截图时保留真实业务状态，更新来源和图片哈希，并检查长卡片是否被固定导航遮挡。封面生成记录见 `docs/article/cover-prompt.md`；封面单独交付，不放入正文复制区。

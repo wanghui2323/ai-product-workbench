@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1062" height="1690" viewBox="0 0 1062 1690">
+<defs><marker id="arr" markerWidth="12" markerHeight="12" refX="7" refY="4" orient="auto"><path d="M0 0L0 8L8 4z" fill="#138e97"/></marker></defs>
+<style>text{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172c40}</style>
+<rect width="1062" height="1690" fill="#fbfaf7"/>
+<text x="60" y="68" font-size="32" font-weight="650" style="fill:#138e97">02 · 决策的影响范围</text>
+<text x="60" y="148" font-size="50" font-weight="700">一个选择，要落到哪些地方</text>
+<text x="60" y="208" font-size="34" style="fill:#637281">条件推演：如果用户选择“按项目统一共享”</text>
+<path d="M60 245H1002" stroke="#c8d1d4" stroke-width="2"/>
+<rect x="60" y="290" width="942" height="162" rx="24" fill="#f6ecd4" stroke="#b68427" stroke-width="2"/>
+<text x="88" y="346" font-size="40" font-weight="650" style="fill:#172c40">当前仍待选择 · 图中演示影响关系</text>
+<text x="88" y="399" font-size="34" style="fill:#637281">真实示例的选择字段为空，推荐不等于已决定。</text>
+<path d="M531 460L531 512" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<text x="564" y="498" font-size="30" font-weight="600" style="fill:#138e97">明确选择之后</text>
+<rect x="60" y="530" width="942" height="166" rx="24" fill="#172c40" stroke="#172c40" stroke-width="2"/>
+<text x="88" y="586" font-size="42" font-weight="650" style="fill:#ffffff">需求方案 · REQ-03</text>
+<text x="88" y="639" font-size="34" style="fill:#c6dbe3">以项目为共享边界；成员只读取所属项目资料。</text>
+<path d="M295 704L295 760" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<path d="M765 704L765 760" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="60" y="780" width="442" height="242" rx="24" fill="#e1f0f1" stroke="#138e97" stroke-width="2"/>
+<text x="88" y="836" font-size="34" font-weight="650" style="fill:#172c40">技术方案 + 技术选型</text>
+<text x="88" y="889" font-size="34" style="fill:#637281">成员与资料绑定项目</text>
+<text x="88" y="935" font-size="34" style="fill:#637281">检索前先限制范围</text>
+<text x="88" y="981" font-size="34" style="fill:#637281">代价：权限粒度较粗</text>
+<rect x="560" y="780" width="442" height="242" rx="24" fill="#ffffff" stroke="#cbd4d8" stroke-width="2"/>
+<text x="588" y="836" font-size="35" font-weight="650" style="fill:#172c40">视觉交互 AI 规范</text>
+<text x="588" y="889" font-size="34" style="fill:#637281">显示当前项目与范围</text>
+<text x="588" y="935" font-size="34" style="fill:#637281">无权访问时给出反馈</text>
+<text x="588" y="981" font-size="34" style="fill:#637281">切换项目后重查状态</text>
+<path d="M295 1029L295 1082" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<path d="M765 1029L765 1082" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="60" y="1100" width="442" height="194" rx="24" fill="#ffffff" stroke="#cbd4d8" stroke-width="2"/>
+<text x="88" y="1156" font-size="38" font-weight="650" style="fill:#172c40">开发计划及模式</text>
+<text x="88" y="1209" font-size="34" style="fill:#637281">先定身份与范围合同</text>
+<text x="88" y="1255" font-size="34" style="fill:#637281">再拆分独立实现任务</text>
+<rect x="560" y="1100" width="442" height="194" rx="24" fill="#e1f0f1" stroke="#138e97" stroke-width="2"/>
+<text x="588" y="1156" font-size="38" font-weight="650" style="fill:#172c40">测试规范</text>
+<text x="588" y="1209" font-size="34" style="fill:#637281">两个项目、同一问题</text>
+<text x="588" y="1255" font-size="34" style="fill:#637281">检查是否混入越权内容</text>
+<path d="M295 1304V1340H765V1304M531 1340V1380" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="60" y="1400" width="942" height="163" rx="24" fill="#172c40" stroke="#172c40" stroke-width="2"/>
+<text x="88" y="1456" font-size="42" font-weight="650" style="fill:#ffffff">上线版本管理 · V0.2</text>
+<text x="88" y="1509" font-size="34" style="fill:#c6dbe3">确定范围、核对对应证据，再判断能否推进版本。</text>
+<path d="M60 1588H1002" stroke="#c8d1d4" stroke-width="2"/>
+<text x="60" y="1637" font-size="30" style="fill:#637281">改变共享方案时，沿 REQ-03 的关联重查，而不只改一处标题。</text></svg>

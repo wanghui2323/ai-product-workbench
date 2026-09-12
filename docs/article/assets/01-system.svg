@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1062" height="1500" viewBox="0 0 1062 1500">
+<defs><marker id="arr" markerWidth="12" markerHeight="12" refX="7" refY="4" orient="auto"><path d="M0 0L0 8L8 4z" fill="#138e97"/></marker></defs>
+<style>text{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#172c40}</style>
+<rect width="1062" height="1500" fill="#fbfaf7"/>
+<text x="60" y="68" font-size="32" font-weight="650" style="fill:#138e97">01 · 系统分工</text>
+<text x="60" y="148" font-size="50" font-weight="700">AI、项目记录和网页，各自负责什么</text>
+<text x="60" y="208" font-size="34" style="fill:#637281">每次继续开发，先回到有来源的记录</text>
+<path d="M60 245H1002" stroke="#c8d1d4" stroke-width="2"/>
+<rect x="60" y="290" width="330" height="180" rx="24" fill="#ffffff" stroke="#cbd4d8" stroke-width="2"/>
+<text x="88" y="346" font-size="38" font-weight="650" style="fill:#172c40">用户</text>
+<text x="88" y="399" font-size="34" style="fill:#637281">表达需求与约束</text>
+<text x="88" y="445" font-size="34" style="fill:#637281">明确回答和选择</text>
+<rect x="500" y="290" width="502" height="180" rx="24" fill="#e1f0f1" stroke="#138e97" stroke-width="2"/>
+<text x="528" y="346" font-size="38" font-weight="650" style="fill:#172c40">AI 会话</text>
+<text x="528" y="399" font-size="34" style="fill:#637281">读取项目事实与 skill</text>
+<text x="528" y="445" font-size="34" style="fill:#637281">澄清、比较、推进任务</text>
+<path d="M396 380L485 380" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<path d="M750 479L750 546" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<text x="411" y="520" font-size="30" font-weight="600" style="fill:#138e97">依据明确回答回写</text>
+<rect x="60" y="565" width="942" height="195" rx="24" fill="#172c40" stroke="#172c40" stroke-width="2"/>
+<text x="88" y="621" font-size="42" font-weight="650" style="fill:#ffffff">项目记录 · 状态的编辑入口</text>
+<text x="88" y="674" font-size="34" style="fill:#c6dbe3">保留已有 SPEC / ADR；关联需求、任务与证据</text>
+<text x="88" y="720" font-size="34" style="fill:#c6dbe3">workbench.json 是生成器读取的结构化来源</text>
+<path d="M300 766L300 831" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<text x="335" y="807" font-size="30" font-weight="600" style="fill:#138e97">校验与生成</text>
+<rect x="60" y="850" width="442" height="176" rx="24" fill="#ffffff" stroke="#cbd4d8" stroke-width="2"/>
+<text x="88" y="906" font-size="38" font-weight="650" style="fill:#172c40">校验器</text>
+<text x="88" y="959" font-size="34" style="fill:#637281">检查结构、关联与状态</text>
+<text x="88" y="1005" font-size="34" style="fill:#637281">不判断证据内容是否真实</text>
+<rect x="562" y="850" width="440" height="176" rx="24" fill="#e1f0f1" stroke="#138e97" stroke-width="2"/>
+<text x="590" y="906" font-size="38" font-weight="650" style="fill:#172c40">生成器</text>
+<text x="590" y="959" font-size="34" style="fill:#637281">将同一份记录呈现为</text>
+<text x="590" y="1005" font-size="34" style="fill:#637281">首页与独立版本页面</text>
+<path d="M510 938L547 938" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<path d="M782 1035L782 1085" fill="none" stroke="#138e97" stroke-width="4" marker-end="url(#arr)"/>
+<rect x="60" y="1105" width="942" height="170" rx="24" fill="#ffffff" stroke="#cbd4d8" stroke-width="2"/>
+<text x="88" y="1161" font-size="42" font-weight="650" style="fill:#172c40">网页工作台 · 阅读与检查入口</text>
+<text x="88" y="1214" font-size="34" style="fill:#637281">浏览 / 搜索 / 下钻；填写回答与选择的草稿</text>
+<path d="M65 1342H990" stroke="#b68427" stroke-width="3" stroke-dasharray="8 8"/>
+<text x="60" y="1379" font-size="34" font-weight="600" style="fill:#b68427">用户将明确回答交给 AI → 回写记录并重新生成</text>
+<path d="M60 1398H1002" stroke="#c8d1d4" stroke-width="2"/>
+<text x="60" y="1447" font-size="30" style="fill:#637281">页面点击不直接改源文件；新一轮会话从项目记录继续。</text></svg>

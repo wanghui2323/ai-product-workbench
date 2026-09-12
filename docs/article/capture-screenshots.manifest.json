@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-12T06:40:45.260810+00:00",
+  "capture_method": "Native Playwright browser screenshots; no image generation, compositing, pixel editing, DOM edits or canonical data mutation.",
+  "demonstration": "文档助手 · 完全虚构的公开示例。业务、计划和状态是演示数据；截图证明工作台界面渲染，不证明文档助手已经实现、验收或上线。",
+  "source": {
+    "path": "examples/document-assistant/docs/workbench/workbench.json",
+    "sha256": "98178da3e9bff8bbd77abbcd46bb920991ba75ff44eb277a3e02e45bf703146e"
+  },
+  "rendered_page": {
+    "path": "examples/document-assistant/docs/workbench/index.html",
+    "sha256": "6c7befde0468522c66d5ae917d8b8b2cbb2fbc7927e5a8269ce22f5933ff39aa"
+  },
+  "reproduce": [
+    "python3 -m http.server 8765 --bind 127.0.0.1",
+    "playwright-cli -s=ai-workbench-article-shots open http://127.0.0.1:8765/examples/document-assistant/docs/workbench/index.html --config=docs/article/capture-screenshots.config.json",
+    "playwright-cli -s=ai-workbench-article-shots run-code --filename=docs/article/capture-screenshots.js"
+  ],
+  "review": {
+    "radio_options_selected": 0,
+    "question_status": "open",
+    "proposal_status": "proposed",
+    "version_states": [
+      "planned",
+      "candidate"
+    ],
+    "delivered_version": null,
+    "release_state": "planned",
+    "gate_states": [
+      "pending",
+      "pending",
+      "pending"
+    ],
+    "note": "Tall narrow viewports retain the responsive layout and avoid sticky-header overlap; captures remain native and uncropped by image editors."
+  },
+  "screenshots": [
+    {
+      "file": "docs/article/assets/screenshot-overview.png",
+      "sha256": "eb58a660686c480e46f81fc6a5f41c24f2cea678952ed7aaecffe4573c90c056",
+      "width_px": 2880,
+      "height_px": 2260,
+      "viewport_css": {
+        "width": 1440,
+        "height": 1130
+      },
+      "device_scale_factor": 2,
+      "selector": "viewport",
+      "url": "http://127.0.0.1:8765/examples/document-assistant/docs/workbench/index.html",
+      "filter": "全部版本",
+      "description": "总览完整九入口、全部版本、1 待回答、1 待选择、2 阻塞事项、0/4 已验收、三个产品模块。"
+    },
+    {
+      "file": "docs/article/assets/screenshot-question.png",
+      "sha256": "dd272a3288d7f5ecfb0fca436eb2729d305a5e56924fd8d12d0f9410105ca9c0",
+      "width_px": 712,
+      "height_px": 1488,
+      "viewport_css": {
+        "width": 390,
+        "height": 2200
+      },
+      "device_scale_factor": 2,
+      "selector": "#question-Q-SHARE",
+      "url": "http://127.0.0.1:8765/examples/document-assistant/docs/workbench/index.html#discovery",
+      "filter": "全部版本",
+      "description": "Q-SHARE 原话及两个未选选项，REQ-03 / V0.2 范围，复制尚未回写提示。"
+    },
+    {
+      "file": "docs/article/assets/screenshot-options.png",
+      "sha256": "90327d9336df6a72bf14642e7c6d7c63b1f8147d39fae8652b7280d8e39e4ccd",
+      "width_px": 712,
+      "height_px": 3678,
+      "viewport_css": {
+        "width": 390,
+        "height": 2200
+      },
+      "device_scale_factor": 2,
+      "selector": "#proposal-PROP-SHARE",
+      "url": "http://127.0.0.1:8765/examples/document-assistant/docs/workbench/index.html#discovery",
+      "filter": "全部版本",
+      "description": "PROP-SHARE 完整两方案、推荐理由、AI 推荐尚未代表选择、成本风险和最小验证；所有单选框未选中。"
+    },
+    {
+      "file": "docs/article/assets/screenshot-release.png",
+      "sha256": "5485ecbeb253b6cf432bc9c29fe6fb070b0f0afb6028ff351ad3b1fd3dff05bc",
+      "width_px": 712,
+      "height_px": 2158,
+      "viewport_css": {
+        "width": 390,
+        "height": 3000
+      },
+      "device_scale_factor": 2,
+      "selector": "#release-records through #gates",
+      "url": "http://127.0.0.1:8765/examples/document-assistant/docs/workbench/index.html#releases",
+      "filter": "全部版本",
+      "description": "发布计划为已计划、产物待构建；三道发布验收关卡均待通过；非部署证据。"
+    }
+  ]
+}
